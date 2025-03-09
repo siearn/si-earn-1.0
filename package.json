@@ -63,11 +63,11 @@
     "@clerk/nextjs": "latest",
     "svix": "latest",
     "@clerk/clerk-react": "latest",
+    "@upstash/redis": "latest",
     "tailwindcss": "latest",
     "@vercel/blob": "latest",
     "nanoid": "latest",
-    "@prisma/client": "latest",
-    "@upstash/redis": "latest"
+    "@prisma/client": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
