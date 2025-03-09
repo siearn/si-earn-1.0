@@ -10,12 +10,36 @@ import UserHeader from "@/components/user-header"
 import AdPlayer from "@/components/ad-player"
 import { redirect } from "next/navigation"
 
+// Define the Ad type
+interface Ad {
+  id: string
+  title: string
+  description: string
+  duration: number
+  reward: number
+  category: string
+  difficulty: string
+  videoUrl: string
+  questions: {
+    id: string
+    question: string
+    options: string[]
+  }[]
+}
+
+// Define the WatchHistory type
+interface WatchHistory {
+  title: string
+  date: string
+  amount: number
+}
+
 export default function EarnPage() {
   const { isLoaded, isSignedIn } = useUser()
-  const [ads, setAds] = useState([])
-  const [selectedAd, setSelectedAd] = useState(null)
+  const [ads, setAds] = useState<Ad[]>([])
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [activeTab, setActiveTab] = useState("available")
-  const [watchHistory, setWatchHistory] = useState([])
+  const [watchHistory, setWatchHistory] = useState<WatchHistory[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -48,11 +72,11 @@ export default function EarnPage() {
     }
   }, [isLoaded, isSignedIn])
 
-  const handleAdSelect = (ad) => {
+  const handleAdSelect = (ad: Ad) => {
     setSelectedAd(ad)
   }
 
-  const handleAdComplete = (adId, analyticsData) => {
+  const handleAdComplete = (adId: string, analyticsData: any) => {
     // Send the analytics data to our API
     fetch("/api/ads/watch", {
       method: "POST",

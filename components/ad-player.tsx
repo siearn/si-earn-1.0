@@ -9,17 +9,45 @@ import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { ArrowLeft, Play, Pause, DollarSign } from "lucide-react"
 
-export default function AdPlayer({ ad, onComplete, onCancel }) {
-  const [stage, setStage] = useState("intro") // intro, watching, questions, completed
+// Add proper types to the AdPlayer component
+
+// Define the Ad type
+interface Ad {
+  id: string
+  title: string
+  description: string
+  duration: number
+  reward: number
+  category: string
+  difficulty: string
+  videoUrl: string
+  questions: {
+    id: string
+    question: string
+    options: string[]
+  }[]
+}
+
+// Define the props type
+interface AdPlayerProps {
+  ad: Ad
+  onComplete: (adId: string, analyticsData: any) => void
+  onCancel: () => void
+}
+
+// Update the component definition
+export default function AdPlayer({ ad, onComplete, onCancel }: AdPlayerProps) {
+  // Update state types
+  const [stage, setStage] = useState<"intro" | "watching" | "questions" | "completed">("intro")
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
-  const [answers, setAnswers] = useState({})
+  const [answers, setAnswers] = useState<Record<string, string>>({})
   const [feedback, setFeedback] = useState("")
-  const [watchStartTime, setWatchStartTime] = useState(null)
+  const [watchStartTime, setWatchStartTime] = useState<number | null>(null)
   const [totalWatchTime, setTotalWatchTime] = useState(0)
-  const videoRef = useRef(null)
-  const progressInterval = useRef(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const progressInterval = useRef<NodeJS.Timeout | null>(null)
 
   const questions = ad.questions || []
 

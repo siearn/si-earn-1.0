@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { useUser } from "@clerk/clerk-react"
 import { Button } from "@/components/ui/button"
@@ -20,9 +22,15 @@ export default function AdminPage() {
   const [reward, setReward] = useState("")
   const [category, setCategory] = useState("")
   const [difficulty, setDifficulty] = useState("")
-  const [videoFile, setVideoFile] = useState(null)
+  const [videoFile, setVideoFile] = useState<File | null>(null)
   const [videoUrl, setVideoUrl] = useState("")
-  const [questions, setQuestions] = useState([{ question: "", options: ["", "", "", ""] }])
+
+  type Question = {
+    question: string
+    options: string[]
+  }
+
+  const [questions, setQuestions] = useState<Question[]>([{ question: "", options: ["", "", "", ""] }])
   const [uploading, setUploading] = useState(false)
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState("")
@@ -32,8 +40,8 @@ export default function AdminPage() {
     redirect("/login")
   }
 
-  const handleVideoChange = (e) => {
-    const file = e.target.files[0]
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
     if (file) {
       setVideoFile(file)
     }
@@ -73,13 +81,13 @@ export default function AdminPage() {
     }
   }
 
-  const handleQuestionChange = (index, field, value) => {
+  const handleQuestionChange = (index: number, field: string, value: string) => {
     const newQuestions = [...questions]
-    newQuestions[index][field] = value
+    newQuestions[index][field as keyof Question] = value
     setQuestions(newQuestions)
   }
 
-  const handleOptionChange = (questionIndex, optionIndex, value) => {
+  const handleOptionChange = (questionIndex: number, optionIndex: number, value: string) => {
     const newQuestions = [...questions]
     newQuestions[questionIndex].options[optionIndex] = value
     setQuestions(newQuestions)
@@ -89,13 +97,13 @@ export default function AdminPage() {
     setQuestions([...questions, { question: "", options: ["", "", "", ""] }])
   }
 
-  const removeQuestion = (index) => {
+  const removeQuestion = (index: number) => {
     const newQuestions = [...questions]
     newQuestions.splice(index, 1)
     setQuestions(newQuestions)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!title || !description || !duration || !reward || !category || !difficulty || !videoUrl) {
