@@ -1,6 +1,9 @@
 {
   "buildCommand": "npx prisma generate && next build",
   "installCommand": "npm install --legacy-peer-deps",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_aG9uZXN0LW1vbGUtMjAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  }
 }
 

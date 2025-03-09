@@ -1,6 +1,4 @@
-"use client"
-
-export default function NotFound() {
+export default function Custom404() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">

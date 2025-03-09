@@ -17,8 +17,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Use a default key for static generation during build
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_placeholder-key-for-build"
+  // Use the environment variable for the publishable key
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
   return (
     <html lang="en">
