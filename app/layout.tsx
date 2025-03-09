@@ -17,10 +17,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Use a default publishable key if the environment variable is not set
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_placeholder-key-for-build"
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClerkProvider>
+        <ClerkProvider publishableKey={publishableKey}>
           <ThemeProvider attribute="class" defaultTheme="light">
             {children}
           </ThemeProvider>

@@ -4,21 +4,17 @@ import { Redis } from "@upstash/redis"
 let redis: Redis
 
 try {
-  // Make sure the URL starts with https://
+  // Get the environment variables
   const url = process.env.KV_URL || ""
   const token = process.env.KV_REST_API_TOKEN || ""
 
-  // Ensure URL starts with https://
-  const formattedUrl = url.startsWith("https://")
-    ? url
-    : url.startsWith("rediss://")
-      ? `https://${url.substring(8)}`
-      : `https://${url}`
-
+  // Create the Redis client
   redis = new Redis({
-    url: formattedUrl,
+    url: "https://fast-vulture-59091.upstash.io",
     token: token,
   })
+
+  console.log("Redis client initialized successfully")
 } catch (error) {
   console.error("Failed to initialize Redis client:", error)
   // Provide a fallback implementation
