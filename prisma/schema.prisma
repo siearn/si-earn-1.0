@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  clerkId       String    @unique
+  name          String
+  email         String    @unique
+  balance       Float     @default(0)
+  adsWatched    Int       @default(0)
+  watchTimeMinutes Int    @default(0)
+  feedbackScore Int       @default(100)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  adWatches     AdWatch[]
+}
+
+model Ad {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  duration    Int       // in seconds
+  reward      Float
+  category    String
+  difficulty  String
+  videoUrl    String
+  questions   Question[]
+  adWatches   AdWatch[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Question {
+  id       String   @id @default(cuid())
+  adId     String
+  ad       Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+  question String
+  options  String[] // Stored as JSON array
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answers   Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  adWatchId  String
+  adWatch    AdWatch  @relation(fields: [adWatchId], references: [id], onDelete: Cascade)
+  answer     String
+  createdAt  DateTime @default(now())
+}
+
+model AdWatch {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  adId          String
+  ad            Ad       @relation(fields: [adId], references: [id], onDelete: Cascade)
+  watchTime     Int      // in seconds
+  completed     Boolean  @default(false)
+  feedback      String?
+  answers       Answer[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
