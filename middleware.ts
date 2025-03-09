@@ -1,6 +1,6 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { createMiddleware } from "@clerk/nextjs/server"
 
-export default authMiddleware({
+export default createMiddleware({
   // Public routes that don't require authentication
   publicRoutes: ["/", "/login", "/api/webhooks(.*)"],
 })

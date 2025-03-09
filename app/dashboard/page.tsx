@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useUser } from "@clerk/clerk-react"
+import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart2, DollarSign, Clock, Award } from "lucide-react"
@@ -10,7 +10,7 @@ import UserHeader from "@/components/user-header"
 import { redirect } from "next/navigation"
 
 export default function DashboardPage() {
-  const { isLoaded, isSignedIn } = useUser()
+  const { user, isLoaded, isSignedIn } = useUser()
   const [userData, setUserData] = useState(null)
   const [loading, setLoading] = useState(true)
 

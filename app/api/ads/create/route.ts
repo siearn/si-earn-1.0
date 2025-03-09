@@ -1,10 +1,10 @@
-import { auth } from "@clerk/nextjs"
+import { getAuth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { cacheAdData } from "@/lib/redis"
 
 export async function POST(req: Request) {
-  const { userId } = auth()
+  const { userId } = getAuth(req)
 
   // In a real app, you'd check if the user is an admin
   if (!userId) {
