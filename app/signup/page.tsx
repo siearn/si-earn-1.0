@@ -19,7 +19,7 @@ export default function SignUpPage() {
             <h1 className="text-3xl font-bold">Create an Account</h1>
             <p className="text-muted-foreground">Join SI Earn and start earning today</p>
           </div>
-          <SignUp />
+          <SignUp redirectUrl="/dashboard" />
         </div>
       </main>
       <footer className="border-t py-6">

@@ -37,7 +37,10 @@ export default function DashboardPage() {
   if (!isLoaded || loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p>Loading...</p>
+        <div className="flex flex-col items-center gap-2">
+          <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+          <p className="text-lg font-medium">Loading...</p>
+        </div>
       </div>
     )
   }
@@ -47,9 +50,11 @@ export default function DashboardPage() {
       <UserHeader />
       <main className="flex-1 container py-8">
         <div className="space-y-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back, {userData?.name}! Here's an overview of your account.</p>
+          <div className="bg-primary/10 rounded-lg p-6 border border-primary/20">
+            <h1 className="text-4xl font-bold tracking-tight mb-2">
+              Welcome back, {user?.firstName || userData?.name || "User"}!
+            </h1>
+            <p className="text-muted-foreground">We're glad to see you again. Here's an overview of your account.</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

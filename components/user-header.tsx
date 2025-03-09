@@ -3,11 +3,12 @@
 import Link from "next/link"
 import { useUser, UserButton } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
-import { ShoppingBag } from "lucide-react"
+import { ShoppingBag, Shield } from "lucide-react"
 
 export default function UserHeader() {
   const { user, isLoaded } = useUser()
   const [balance, setBalance] = useState(0)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -20,6 +21,14 @@ export default function UserHeader() {
           }
         })
         .catch((err) => console.error("Error fetching user data:", err))
+
+      // Check if user is admin
+      fetch("/api/admin/check")
+        .then((res) => res.json())
+        .then((data) => {
+          setIsAdmin(data.isAdmin)
+        })
+        .catch((err) => console.error("Error checking admin status:", err))
     }
   }, [isLoaded, user])
 
@@ -37,9 +46,18 @@ export default function UserHeader() {
           <Link href="/earn" className="text-sm font-medium">
             Earn
           </Link>
+          <Link href="/about" className="text-sm font-medium">
+            About
+          </Link>
           <Link href="/rewards" className="text-sm font-medium">
             Rewards
           </Link>
+          {isAdmin && (
+            <Link href="/admin/dashboard" className="text-sm font-medium flex items-center gap-1">
+              <Shield className="h-4 w-4" />
+              Admin
+            </Link>
+          )}
         </nav>
         <div className="flex items-center gap-4">
           <div className="hidden md:block">

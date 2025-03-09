@@ -20,6 +20,8 @@ model User {
   adsWatched       Int       @default(0)
   watchTimeMinutes Int       @default(0)
   feedbackScore    Int       @default(100)
+  isAdmin          Boolean   @default(false)
+  lastActive       DateTime  @default(now())
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   adWatches        AdWatch[]

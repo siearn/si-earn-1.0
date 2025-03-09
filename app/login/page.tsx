@@ -19,7 +19,7 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold">Welcome to SI Earn</h1>
             <p className="text-muted-foreground">Shopping, Insights, and Earning</p>
           </div>
-          <SignIn />
+          <SignIn redirectUrl="/dashboard" />
         </div>
       </main>
       <footer className="border-t py-6">

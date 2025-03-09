@@ -15,6 +15,9 @@ export default function WelcomePage() {
             <Link href="/" className="text-sm font-medium">
               Home
             </Link>
+            <Link href="/about" className="text-sm font-medium">
+              About
+            </Link>
             <Link href="/earn" className="text-sm font-medium">
               Earn
             </Link>
@@ -26,7 +29,7 @@ export default function WelcomePage() {
             <Link href="/login">
               <Button variant="outline">Login</Button>
             </Link>
-            <Link href="/login?signup=true">
+            <Link href="/signup">
               <Button>Sign Up</Button>
             </Link>
           </div>
@@ -43,10 +46,10 @@ export default function WelcomePage() {
                   insights help brands improve their products while you earn rewards.
                 </p>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link href="/login?signup=true">
+                  <Link href="/signup">
                     <Button size="lg">Get Started</Button>
                   </Link>
-                  <Link href="/learn-more">
+                  <Link href="/about">
                     <Button size="lg" variant="outline">
                       Learn More
                     </Button>
@@ -112,7 +115,7 @@ export default function WelcomePage() {
                   Our platform connects you with brands that value your opinion. Watch ads, answer questions, and earn
                   money - it's that simple.
                 </p>
-                <Link href="/login?signup=true">
+                <Link href="/signup">
                   <Button size="lg">Sign Up Now</Button>
                 </Link>
               </div>
@@ -171,6 +174,9 @@ export default function WelcomePage() {
             <nav className="flex flex-col gap-2">
               <Link href="/" className="text-sm hover:underline">
                 Home
+              </Link>
+              <Link href="/about" className="text-sm hover:underline">
+                About
               </Link>
               <Link href="/earn" className="text-sm hover:underline">
                 Earn
