@@ -2,11 +2,11 @@ import { SignIn } from "@clerk/nextjs"
 import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
 import { redirect } from "next/navigation"
-import { auth } from "@clerk/nextjs"
+import { getAuth } from "@clerk/nextjs/server"
 
 export default function LoginPage() {
-  // If user is already signed in, redirect to dashboard
-  const { userId } = auth()
+  // Server component - use getAuth instead of auth
+  const { userId } = getAuth()
   if (userId) {
     redirect("/dashboard")
   }

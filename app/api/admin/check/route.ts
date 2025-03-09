@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
-import { auth } from "@clerk/nextjs"
+import { getAuth } from "@clerk/nextjs/server"
 
 export async function GET(req: Request) {
-  const { userId } = auth()
+  const { userId } = getAuth({ req })
 
   if (!userId) {
     return NextResponse.json({ isAdmin: false }, { status: 401 })

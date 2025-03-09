@@ -1,24 +1,34 @@
-import { authMiddleware } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
+import { getAuth } from "@clerk/nextjs/server"
 
-export default authMiddleware({
-  publicRoutes: ["/", "/login", "/signup", "/about", "/api/webhooks/clerk(.*)", "/api/webhooks/clerk/route"],
-  afterAuth(auth, req) {
-    // Handle users who aren't authenticated
-    if (!auth.userId && !auth.isPublicRoute) {
-      const signInUrl = new URL("/login", req.url)
-      signInUrl.searchParams.set("redirect_url", req.url)
-      return NextResponse.redirect(signInUrl)
-    }
+export function middleware(request) {
+  // Get the pathname of the request
+  const path = request.nextUrl.pathname
 
-    // If the user is logged in and trying to access login/signup pages, redirect to dashboard
-    if (auth.userId && (req.nextUrl.pathname === "/login" || req.nextUrl.pathname === "/signup")) {
-      return NextResponse.redirect(new URL("/dashboard", req.url))
-    }
-  },
-})
+  // Define public routes that don't require authentication
+  const isPublicRoute = ["/", "/login", "/signup", "/about", "/api/webhooks/clerk"].some((route) =>
+    path.startsWith(route),
+  )
+
+  // Get auth data from Clerk
+  const { userId } = getAuth(request)
+
+  // If the user is not authenticated and the route is not public, redirect to login
+  if (!userId && !isPublicRoute) {
+    const url = new URL("/login", request.url)
+    url.searchParams.set("redirect_url", path)
+    return NextResponse.redirect(url)
+  }
+
+  // If the user is authenticated and trying to access login/signup, redirect to dashboard
+  if (userId && (path === "/login" || path === "/signup")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url))
+  }
+
+  return NextResponse.next()
+}
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)"],
 }
 
