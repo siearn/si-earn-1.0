@@ -17,13 +17,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // TEMPORARY: Hardcoded key for testing - REPLACE THIS IN PRODUCTION!
-  const publishableKey = "pk_test_aG9uZXN0LW1vbGUtMjAuY2xlcmsuYWNjb3VudHMuZGV2JA"
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClerkProvider publishableKey={publishableKey}>
+        <ClerkProvider>
           <ThemeProvider attribute="class" defaultTheme="light">
             {children}
           </ThemeProvider>

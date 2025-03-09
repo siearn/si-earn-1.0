@@ -61,13 +61,13 @@
     "prisma": "latest",
     "typescript": "latest",
     "@clerk/nextjs": "latest",
-    "svix": "latest",
     "@clerk/clerk-react": "latest",
     "@upstash/redis": "latest",
     "tailwindcss": "latest",
     "@vercel/blob": "latest",
     "nanoid": "latest",
-    "@prisma/client": "latest"
+    "@prisma/client": "latest",
+    "svix": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

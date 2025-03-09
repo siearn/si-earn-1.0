@@ -45,7 +45,7 @@ export default function AdminSetupPage() {
     }
   }
 
-  if (!isLoaded || !isSignedIn) {
+  if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-2">
@@ -54,6 +54,11 @@ export default function AdminSetupPage() {
         </div>
       </div>
     )
+  }
+
+  if (!isSignedIn) {
+    router.push("/login")
+    return null
   }
 
   return (

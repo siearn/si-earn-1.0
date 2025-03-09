@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error("Error: Missing svix headers")
     return new Response("Error: Missing svix headers", {
       status: 400,
     })
@@ -43,44 +44,60 @@ export async function POST(req: Request) {
 
   // Handle the webhook
   const eventType = evt.type
+  console.log(`Webhook received: ${eventType}`)
 
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name } = evt.data
 
-    // Create a new user in the database
-    await prisma.user.create({
-      data: {
-        clerkId: id,
-        email: email_addresses[0].email_address,
-        name: `${first_name || ""} ${last_name || ""}`.trim(),
-        balance: 0,
-        adsWatched: 0,
-        watchTimeMinutes: 0,
-        feedbackScore: 100,
-      },
-    })
+    try {
+      // Create a new user in the database
+      const user = await prisma.user.create({
+        data: {
+          clerkId: id,
+          email: email_addresses[0].email_address,
+          name: `${first_name || ""} ${last_name || ""}`.trim(),
+          balance: 0,
+          adsWatched: 0,
+          watchTimeMinutes: 0,
+          feedbackScore: 100,
+        },
+      })
+      console.log(`User created: ${user.id}`)
+    } catch (error) {
+      console.error("Error creating user:", error)
+    }
   }
 
   if (eventType === "user.updated") {
     const { id, email_addresses, first_name, last_name } = evt.data
 
-    // Update the user in the database
-    await prisma.user.update({
-      where: { clerkId: id },
-      data: {
-        email: email_addresses[0].email_address,
-        name: `${first_name || ""} ${last_name || ""}`.trim(),
-      },
-    })
+    try {
+      // Update the user in the database
+      const user = await prisma.user.update({
+        where: { clerkId: id },
+        data: {
+          email: email_addresses[0].email_address,
+          name: `${first_name || ""} ${last_name || ""}`.trim(),
+        },
+      })
+      console.log(`User updated: ${user.id}`)
+    } catch (error) {
+      console.error("Error updating user:", error)
+    }
   }
 
   if (eventType === "user.deleted") {
     const { id } = evt.data
 
-    // Delete the user from the database
-    await prisma.user.delete({
-      where: { clerkId: id },
-    })
+    try {
+      // Delete the user from the database
+      await prisma.user.delete({
+        where: { clerkId: id },
+      })
+      console.log(`User deleted: ${id}`)
+    } catch (error) {
+      console.error("Error deleting user:", error)
+    }
   }
 
   return NextResponse.json({ success: true })

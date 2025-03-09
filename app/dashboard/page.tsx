@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart2, DollarSign, Clock, Award } from "lucide-react"
 import UserHeader from "@/components/user-header"
-import { redirect } from "next/navigation"
 
 export default function DashboardPage() {
   const { user, isLoaded, isSignedIn } = useUser()
@@ -17,7 +16,8 @@ export default function DashboardPage() {
   useEffect(() => {
     if (isLoaded) {
       if (!isSignedIn) {
-        redirect("/login")
+        window.location.href = "/login"
+        return
       } else {
         // Fetch user data from our API
         fetch("/api/user")
@@ -64,7 +64,7 @@ export default function DashboardPage() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">${userData?.balance.toFixed(2)}</div>
+                <div className="text-2xl font-bold">${userData?.balance?.toFixed(2) || "0.00"}</div>
                 <p className="text-xs text-muted-foreground">+$2.50 from last week</p>
               </CardContent>
             </Card>

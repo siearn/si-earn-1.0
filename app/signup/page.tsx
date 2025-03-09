@@ -1,8 +1,16 @@
 import { SignUp } from "@clerk/nextjs"
 import Link from "next/link"
 import { ShoppingBag } from "lucide-react"
+import { redirect } from "next/navigation"
+import { auth } from "@clerk/nextjs"
 
 export default function SignUpPage() {
+  // If user is already signed in, redirect to dashboard
+  const { userId } = auth()
+  if (userId) {
+    redirect("/dashboard")
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
@@ -19,7 +27,17 @@ export default function SignUpPage() {
             <h1 className="text-3xl font-bold">Create an Account</h1>
             <p className="text-muted-foreground">Join SI Earn and start earning today</p>
           </div>
-          <SignUp redirectUrl="/dashboard" />
+          <SignUp
+            redirectUrl="/dashboard"
+            afterSignUpUrl="/dashboard"
+            signInUrl="/login"
+            appearance={{
+              elements: {
+                rootBox: "mx-auto w-full",
+                card: "shadow-none",
+              },
+            }}
+          />
         </div>
       </main>
       <footer className="border-t py-6">
