@@ -62,10 +62,10 @@ model AdWatch {
 }
 
 model Answer {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
-  adWatch    AdWatch @relation(fields: [adWatchId], references: [id], onDelete: Cascade)
+  adWatch    AdWatch  @relation(fields: [adWatchId], references: [id], onDelete: Cascade)
   adWatchId  String
   answer     String
 }
