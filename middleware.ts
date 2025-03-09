@@ -2,16 +2,19 @@ import { NextResponse } from "next/server"
 import { getAuth } from "@clerk/nextjs/server"
 
 export function middleware(request) {
+  // Get auth data from Clerk
+  const { userId } = getAuth(request)
+
   // Get the pathname of the request
   const path = request.nextUrl.pathname
 
   // Define public routes that don't require authentication
-  const isPublicRoute = ["/", "/login", "/signup", "/about", "/api/webhooks/clerk"].some((route) =>
-    path.startsWith(route),
-  )
-
-  // Get auth data from Clerk
-  const { userId } = getAuth(request)
+  const isPublicRoute =
+    path === "/" ||
+    path === "/login" ||
+    path === "/signup" ||
+    path === "/about" ||
+    path.startsWith("/api/webhooks/clerk")
 
   // If the user is not authenticated and the route is not public, redirect to login
   if (!userId && !isPublicRoute) {
@@ -29,6 +32,9 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)"],
+  matcher: [
+    // Match all paths except static files, images, and api routes that don't need auth
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)",
+  ],
 }
 
